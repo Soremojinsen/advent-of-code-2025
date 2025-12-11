@@ -5,10 +5,14 @@ Solutions to the Advent of Code 2025 challenges implemented in Rust.
 ## Project Structure
 - `src/puzzles/` - Individual puzzle solutions organized by day
 - `src/utils/` - Shared utilities
-- `puzzles_inputs/` - Puzzle input files
+- `puzzles_inputs/` - Puzzle input files (format: `real/day[N].txt`)
 
-## Building & Running
+## Running
 ```bash
-cargo build
-cargo run
+cargo run --release
+```
+
+## Test solutions
+```bash
+cargo test --lib
 ```
