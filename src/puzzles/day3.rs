@@ -30,7 +30,7 @@ fn largest_joltage_for_bank_with_two_batteries(bank: &str) -> usize {
 }
 
 fn largest_joltage_for_bank_with_n_batteries(bank: &str, batt: usize) -> usize {
-    // We iterate the input digits (with indices) and maintain a buffer 
+    // We iterate the input digits (with indices) and maintain a buffer
     // `digits` of length `batt` where each slot is the currently chosen
     // digit for that output position.
     let bank_length = bank.len();
@@ -38,31 +38,37 @@ fn largest_joltage_for_bank_with_n_batteries(bank: &str, batt: usize) -> usize {
         .chars()
         .filter_map(|x| x.to_digit(DIGIT_RADIX))
         .enumerate()
-        .fold((vec![0u32; batt], 0usize), |(mut digits, mut digit_pos_state), (i, num)| {
-            // Try to place `num` into the earliest position `j` it can occupy.
-            // The condition `i < bank_length - batt + 1 + j` ensures we don't
-            // pick a digit too late that would prevent filling the remaining
-            // positions.
-            for (j, value) in digits.iter_mut().enumerate() {
-                if digit_pos_state >= j {
-                    if num > *value && i < bank_length - batt + 1 + j {
+        .fold(
+            (vec![0u32; batt], 0usize),
+            |(mut digits, mut digit_pos_state), (i, num)| {
+                // Try to place `num` into the earliest position `j` it can occupy.
+                // The condition `i < bank_length - batt + 1 + j` ensures we don't
+                // pick a digit too late that would prevent filling the remaining
+                // positions.
+                for (j, value) in digits.iter_mut().enumerate() {
+                    if digit_pos_state >= j {
+                        if num > *value && i < bank_length - batt + 1 + j {
+                            *value = num;
+                            digit_pos_state = j;
+                            break;
+                        }
+                    } else {
                         *value = num;
                         digit_pos_state = j;
                         break;
                     }
-                } else {
-                    *value = num;
-                    digit_pos_state = j;
-                    break;
                 }
-            }
-            (digits, digit_pos_state)
-        });
+                (digits, digit_pos_state)
+            },
+        );
 
     // Build numeric result from the chosen digits.
-    let (value, _) = digits.into_iter().rev().fold((0usize, 1usize), |(acc, mul), v| {
-        (acc + v as usize * mul, mul * (DIGIT_RADIX as usize))
-    });
+    let (value, _) = digits
+        .into_iter()
+        .rev()
+        .fold((0usize, 1usize), |(acc, mul), v| {
+            (acc + v as usize * mul, mul * (DIGIT_RADIX as usize))
+        });
     value
 }
 
