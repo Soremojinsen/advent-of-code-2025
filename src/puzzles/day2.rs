@@ -11,7 +11,7 @@ fn is_invalid_id_part1(id: usize) -> bool {
 }
 
 // Parse a single range fragment like "start-end" into a RangeInclusive<usize>
-fn parse_range(fragment: &str) -> Option<std::ops::RangeInclusive<usize>> {
+pub fn parse_range(fragment: &str) -> Option<std::ops::RangeInclusive<usize>> {
     let parts: Vec<&str> = fragment.split(DASH_DELIMITER).collect();
     if parts.len() != 2 {
         return None;
